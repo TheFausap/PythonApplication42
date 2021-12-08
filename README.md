@@ -18,3 +18,6 @@ the stack is LIFO
 * `{z}` : put on the stack the program Z in order to be executed later, i.e.: `{DUP,MUL}`, with the command `EXE`.
 * `.` : print out on the screen the latest value in the stack
 
+# Example
+
+`5 4 7 4 ADD . SUB MUL . 10 < [20,30] . {DUP,MUL} EXE .`
