@@ -1,56 +1,65 @@
 import sys
 import re
 
-loc = 0
-
-stack = []
+stack = [None] * 16384
 
 fl = open(sys.argv[1],"r")
 l = fl.readline()
 lib = False
 
-while(l):
-    l1 = l.strip().split(' ')
-    r = 0.0
-    for ll in l1:
-        if  ll.isdecimal():
-            stack[loc] = float(ll)
-            loc += 1
-        elif ll == 'DUP':
-            stack[loc] = stack[loc-1]
-            loc += 1
-        elif ll == 'POP':
-            loc -= 1
-        elif ll == 'ADD':
-            r = stack[loc-1] + stack[loc-2]
-            stack[loc-2] = r
-            loc -= 1
-        elif ll == 'SUB':
-            r = stack[loc-1] - stack[loc-2]
-            stack[loc-2] = r
-            loc -= 1
-        elif ll == 'MUL':
-            r = stack[loc-1] * stack[loc-2]
-            stack[loc-2] = r
-            loc -= 1
-        elif ll == 'DIV':
-            r = stack[loc-1] / stack[loc-2]
-            stack[loc-2] = r
-            loc -= 1
-        elif ll == '<':
-            stack[loc] = stack[loc-1] < stack[loc-2]
-            loc += 1
-        elif ll == '.':
-            print(stack[loc-1])
-        elif list(ll)[0] == '[':
-            p = re.compile('\[(\d+),(\d+)\]')
-            ll1 = p.match(ll)
-            stack[loc] = ll1.group(1) if stack[loc-1] else ll1.group(2)
-            loc += 1
-        elif list(ll)[0] == '{':
-            stack[loc] = ll
-            loc += 1
-    l = fl.readline()
+def parse(l,c = ' ',p = 0):
+    loc = p
+    while(l):
+        l1 = l.strip().split(c)
+        r = 0.0
+        for ll in l1:
+            if  ll.isdecimal():
+                stack[loc] = float(ll)
+                loc += 1
+            elif ll == 'DUP':
+                stack[loc] = stack[loc-1]
+                loc += 1
+            elif ll == 'POP':
+                loc -= 1
+            elif ll == 'ADD':
+                r = float(stack[loc-1]) + float(stack[loc-2])
+                stack[loc-2] = r
+                loc -= 1
+            elif ll == 'SUB':
+                r = float(stack[loc-1]) - float(stack[loc-2])
+                stack[loc-2] = r
+                loc -= 1
+            elif ll == 'MUL':
+                r = float(stack[loc-1]) * float(stack[loc-2])
+                stack[loc-2] = r
+                loc -= 1
+            elif ll == 'DIV':
+                r = float(stack[loc-1]) / float(stack[loc-2])
+                stack[loc-2] = r
+                loc -= 1
+            elif ll == '<':
+                stack[loc] = float(stack[loc-1]) < float(stack[loc-2])
+                loc += 1
+            elif ll == 'EXE':
+                p = re.compile('{(.*)}')
+                ll1 = p.match(stack[loc-1])
+                parse(ll1.group(1),',',loc-1)
+                loc -= 1
+            elif ll == '.':
+                print(stack[loc-1])
+            elif list(ll)[0] == '[':
+                p = re.compile('\[(\d+),(\d+)\]')
+                ll1 = p.match(ll)
+                stack[loc] = ll1.group(1) if stack[loc-1] else ll1.group(2)
+                loc += 1
+            elif list(ll)[0] == '{':
+                stack[loc] = ll
+                loc += 1
+            else:
+                pass
+        l = fl.readline()
+
+parse(l)
 
 print(stack[0:10])
 
