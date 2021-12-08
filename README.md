@@ -15,4 +15,5 @@ the stack is LIFO
 `<`   : to perform a comparison between the latest two values on the stack
         it put on the stack the boolean result.
 `[x,y]` : it perform an IF using the boolean result from a comparison returning on the stack x if true, y if false.
+`{z}` : put on the stack the program Z in order to be executed later, i.e.: `{DUP *}`
 `.` : print out on the screen the latest value in the stack

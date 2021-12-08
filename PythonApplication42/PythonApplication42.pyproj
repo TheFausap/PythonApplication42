@@ -31,7 +31,6 @@
     <InterpreterReference Include="Global|VisualStudio|Python 3.9 environment" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="README.md" />
     <Content Include="test.s42" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
