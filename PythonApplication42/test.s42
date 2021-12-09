@@ -1,1 +1,2 @@
 5 4 7 4 ADD . SUB MUL . 10 < [20,30] . {DUP,MUL} EXE .
+DUP ADD .
